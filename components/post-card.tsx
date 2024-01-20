@@ -13,7 +13,7 @@ export default function PostCard({ post }: Props) {
     <Link href={`/posts/${post.slug}`}>
       <Card className='flex flex-col rounded-lg justify-between border-2 h-full'>
         <CardHeader>
-          <div className='aspect-square relative '>
+          <div className='aspect-square relative'>
             <Image
               src='/img/middle-code.jpg'
               alt={post.title}

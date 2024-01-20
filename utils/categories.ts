@@ -8,7 +8,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 2,
     name: 'Next.js',
-    slug: 'nextjs',
+    slug: 'next.js',
   },
   {
     id: 3,

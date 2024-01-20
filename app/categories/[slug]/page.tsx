@@ -1,3 +1,6 @@
+import PageContainer from '@/components/page-container';
+import PageTitle from '@/components/page-title';
+
 type Props = {
   params: {
     slug: string;
@@ -6,9 +9,8 @@ type Props = {
 
 export default function CategoriesPage({ params }: Props) {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-center'>
-      <div>CategoriesPage</div>
-      <div>{params.slug}</div>
-    </main>
+    <PageContainer>
+      <PageTitle title={params.slug.replace('-', ' ')} />
+    </PageContainer>
   );
 }

@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <ThemeProvider defaultTheme='system' attribute='class' enableSystem>
-          <div className='flex flex-col justify-between'>
+          <div className='flex flex-col justify-between min-h-screen'>
             <Header />
             {children}
             <Footer />

@@ -13,6 +13,7 @@ export const POSTS: Post[] = [
     nbViews: 25,
     nbComments: 8,
     slug: 'react-state-management-choosing-right-solution',
+    content: 'Content for post 1',
   },
   {
     id: 2,
@@ -27,6 +28,7 @@ export const POSTS: Post[] = [
     nbViews: 18,
     nbComments: 5,
     slug: 'server-side-rendering-nextjs-practical-guide',
+    content: 'Content for post 2',
   },
   {
     id: 3,
