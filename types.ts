@@ -1,21 +1,19 @@
 export type Category = {
-  id: number;
-  name: string;
-  slug: string;
-};
+  id: number
+  title: string
+  slug: string
+  image?: string
+}
 // à definir dans types.ts à la racine de l'application
 
 export type Post = {
-  id: number;
-  category: string;
-  title: string;
-  image: string;
-  caption: string;
-  date: string | Date;
-  minutesToRead: number;
-  author: string;
-  nbViews: number;
-  nbComments: number;
-  slug: string;
-  content?: string;
-};
+  id: number
+  title: string
+  image?: string
+  createAt: string | Date
+  views: number
+  nbComments: number
+  slug: string
+  catSlug: string
+  content: string
+}

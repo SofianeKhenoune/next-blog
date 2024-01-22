@@ -1,5 +1,5 @@
 // API Posts
-import { POSTS } from '@/utils/posts';
+import prisma from '@/lib/connect';
 import { NextResponse } from 'next/server';
 
 export const GET = async (
@@ -7,6 +7,19 @@ export const GET = async (
   { params }: { params: { slug: string } }
 ) => {
   const { slug } = params;
-  const post = POSTS.find((post) => post.slug === slug);
-  return NextResponse.json(post, { status: 200 });
+  try {
+    const post = await prisma.post.update({
+      where: {
+        slug,
+      },
+      data: {
+        view: {
+          increment: 1,
+        },
+      },
+    });
+    return NextResponse.json(post, { status: 200 });
+  } catch (err) {
+    return NextResponse.json(err, { status: 500 });
+  }
 };

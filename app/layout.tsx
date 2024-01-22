@@ -1,5 +1,6 @@
 import Footer from '@/components/footer';
 import Header from '@/components/header';
+import QuerryProvider from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -20,13 +21,15 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <ThemeProvider defaultTheme='system' attribute='class' enableSystem>
-          <div className='flex flex-col justify-between min-h-screen'>
-            <Header />
-            {children}
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <QuerryProvider>
+          <ThemeProvider defaultTheme='system' attribute='class' enableSystem>
+            <div className='flex flex-col justify-between min-h-screen'>
+              <Header />
+              {children}
+              <Footer />
+            </div>
+          </ThemeProvider>
+        </QuerryProvider>
       </body>
     </html>
   );
