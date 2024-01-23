@@ -2,9 +2,8 @@
 import PageContainer from "@/components/page-container"
 import PageTitle from "@/components/page-title"
 import PostList from "@/components/post-list"
-import { useCategories } from "@/hooks/useCategories"
 import { usePosts } from "@/hooks/usePosts"
-import { Category, Post } from "@/types"
+import { Post } from "@/types"
 
 type Props = {
   params: {
@@ -12,9 +11,8 @@ type Props = {
   }
 }
 export default function CategoriesPage({ params }: Props) {
-  const { data: POSTS, isFetching, error } = usePosts()
   const { slug } = params
-  const { data: CATEGORIES } = useCategories()
+  const { data: POSTS, isFetching, error } = usePosts(slug)
   if (isFetching) {
     return <div>Loading...</div>
   }
@@ -25,10 +23,14 @@ export default function CategoriesPage({ params }: Props) {
     <PageContainer>
       <PageTitle
         title={
-          CATEGORIES?.find((category: Category) => category.slug === slug)
-            ?.title
+          slug === "nextjs"
+            ? "Next.js"
+            : slug
+                .replace("-", " ")
+                .replace(slug.charAt(0), slug.charAt(0).toUpperCase())
         }
       />
+      {POSTS.length === 0 && <p className="text-center">No posts found</p>}
       {!isFetching && (
         <PostList
           posts={POSTS.filter((post: Post) => post.catSlug === params.slug)}

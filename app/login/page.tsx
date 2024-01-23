@@ -1,24 +1,32 @@
-import PageContainer from '@/components/page-container';
-import PageTitle from '@/components/page-title';
-import { Button } from '@/components/ui/button';
-import { Github, Mail } from 'lucide-react';
+"use client"
+import PageContainer from "@/components/page-container"
+import PageTitle from "@/components/page-title"
+import { Button } from "@/components/ui/button"
+import { Github, Mail } from "lucide-react"
+import { signIn } from "next-auth/react"
 
 export default function Login() {
+  const onLogin = (provider: string) => () => {
+    // TODO: implement
+    signIn(provider)
+    // Sign in with provider
+    // Redirect
+  }
   return (
     <PageContainer>
-      <div className='p-10'>
-        <PageTitle title='Login or Register' />
-        <div className='flex flex-col justify-center items-center gap-4 max-w-sm mx-auto'>
-          <Button>
-            <Github className='mr-3' />
+      <div className="p-10">
+        <PageTitle title="Login or Register" />
+        <div className="flex flex-col justify-center items-center gap-4 max-w-sm mx-auto">
+          <Button onClick={onLogin("github")}>
+            <Github className="mr-3" />
             Sign in with GitHub
           </Button>
-          <Button>
-            <Mail className='mr-3' />
+          <Button onClick={onLogin("google")}>
+            <Mail className="mr-3" />
             Sign in with Google
           </Button>
         </div>
       </div>
     </PageContainer>
-  );
+  )
 }

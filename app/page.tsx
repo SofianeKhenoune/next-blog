@@ -2,14 +2,16 @@
 import PostList from "@/components/post-list"
 import { useCategories } from "@/hooks/useCategories"
 import { usePosts } from "@/hooks/usePosts"
+
 import { Category } from "@/types"
 import Link from "next/link"
 import PageContainer from "../components/page-container"
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 
-export default function Hero() {
-  const { data: POSTS, isFetching, error } = usePosts()
+export default function Hero({ params }: { params: { cat?: string } }) {
+  const { cat } = params
+  const { data: POSTS, isFetching, error } = usePosts(cat)
   const {
     data: CATEGORIES,
     isFetching: isFetchingCategories,
@@ -53,7 +55,7 @@ export default function Hero() {
           </div>
         </div>
         {/* second section categories */}
-        <div className="p-4 mt-6 flex flex-col gap-4 md:flex-row justify-center items-center ">
+        <div className="p-4 mt-6 flex flex-col gap-4 md:flex-row justify-center items-center">
           {!isFetchingCategories &&
             CATEGORIES.map((category: Category) => (
               <Link key={category.id} href={`/categories/${category.slug}`}>

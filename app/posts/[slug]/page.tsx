@@ -38,7 +38,10 @@ const SinglePost = ({ params }: Props) => {
         <div className="flex justify-between items-center text-sm P-3 my-6">
           <div className="flex gap-4 items-center">
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarImage
+                src="https://github.com/shadcn.png"
+                alt="@shadcn image"
+              />
               <AvatarFallback>
                 {post.author &&
                   post.author.charAt(0) +
@@ -46,8 +49,12 @@ const SinglePost = ({ params }: Props) => {
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <p className="">{post.author}</p>
-              <p className="text-slate-500 text-sm">{`Posted on ${post.date}`}</p>
+              {post.author ? <p className="">{post.author}</p> : "Anonymous"}
+
+              <p className="text-slate-500 text-sm">{`Posted on ${post.createdAt.slice(
+                0,
+                10
+              )}`}</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -57,7 +64,7 @@ const SinglePost = ({ params }: Props) => {
             </div>
             <div className="flex items-center gap-1">
               <Eye size={20} className="" />
-              <p className="">{post.nbViews}</p>
+              <p className="">{post.view}</p>
             </div>
           </div>
         </div>

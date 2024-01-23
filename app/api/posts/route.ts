@@ -1,12 +1,21 @@
 // API Posts
-import prisma from '@/lib/connect';
-import { NextResponse } from 'next/server';
+import prisma from "@/lib/connect"
+import { NextResponse } from "next/server"
 
 export const GET = async (req: Request) => {
   try {
-    const posts = await prisma.post.findMany();
-    return NextResponse.json(posts, { status: 200 });
-  } catch (err) {
-    return NextResponse.json(err, { status: 500 });
+    const { searchParams } = new URL(req.url)
+    const catSlug = searchParams.get("cat")
+    const posts = await prisma.post.findMany({
+      where: {
+        ...(catSlug && catSlug !== "null" && catSlug !== "" && { catSlug }),
+      },
+      include: {
+        cat: true,
+      },
+    })
+    return NextResponse.json(posts, { status: 200 })
+  } catch (error) {
+    return NextResponse.json(error, { status: 500 })
   }
-};
+}

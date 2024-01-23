@@ -1,8 +1,8 @@
 import { useQuery } from "react-query"
 
-const getAllPosts = async () => {
+const getAllPosts = async (slug: string | null) => {
   try {
-    const response = await fetch("/api/posts", { method: "GET" })
+    const response = await fetch(`/api/posts?cat=${slug}`, { method: "GET" })
     if (!response.ok) {
       throw new Error(`erreur HTTP! statut: ${response.status}`)
     }
@@ -13,9 +13,9 @@ const getAllPosts = async () => {
   }
 }
 
-export function usePosts() {
+export function usePosts(slug: string | null = null) {
   return useQuery({
     queryKey: ["posts"],
-    queryFn: () => getAllPosts(),
+    queryFn: () => getAllPosts(slug),
   })
 }
