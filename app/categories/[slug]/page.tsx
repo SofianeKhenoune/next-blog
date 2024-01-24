@@ -3,7 +3,6 @@ import PageContainer from "@/components/page-container"
 import PageTitle from "@/components/page-title"
 import PostList from "@/components/post-list"
 import { usePosts } from "@/hooks/usePosts"
-import { Post } from "@/types"
 
 type Props = {
   params: {
@@ -13,6 +12,10 @@ type Props = {
 export default function CategoriesPage({ params }: Props) {
   const { slug } = params
   const { data: POSTS, isFetching, error } = usePosts(slug)
+  const formattedSlug = slug
+    .replace("-", " ")
+    .replace(slug.charAt(0), slug.charAt(0).toUpperCase())
+
   if (isFetching) {
     return <div>Loading...</div>
   }
@@ -22,20 +25,12 @@ export default function CategoriesPage({ params }: Props) {
   return (
     <PageContainer>
       <PageTitle
-        title={
-          slug === "nextjs"
-            ? "Next.js"
-            : slug
-                .replace("-", " ")
-                .replace(slug.charAt(0), slug.charAt(0).toUpperCase())
-        }
+        title={POSTS && POSTS.length ? POSTS[0].cat.title : formattedSlug}
       />
-      {POSTS.length === 0 && <p className="text-center">No posts found</p>}
-      {!isFetching && (
-        <PostList
-          posts={POSTS.filter((post: Post) => post.catSlug === params.slug)}
-        />
+      {POSTS && POSTS.length === 0 && (
+        <p className="text-center">No posts found</p>
       )}
+      {!isFetching && <PostList posts={POSTS} />}
     </PageContainer>
   )
 }

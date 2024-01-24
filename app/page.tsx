@@ -35,12 +35,12 @@ export default function Hero({ params }: { params: { cat?: string } }) {
       <div className="py-10 px-4">
         {/* first section hero */}
         <div
-          className="py-10 px-4 rounded-lg aspect-square md:aspect-[2.4/1] bg-cover overflow-hidden"
+          className="py-10 px-4 rounded-lg aspect-square md:aspect-[2.4/1] bg-cover overflow-hidden flex justify-center items-center"
           style={{
             backgroundImage: "url(/img/big-code.jpg)",
           }}
         >
-          <div className="flex h-full flex-col items-center justify-center gap-4 p-4 text-center m-auto rounded-lg border bg-secondary/70">
+          <div className="flex flex-col items-center justify-center gap-4 p-4 text-center m-auto rounded-lg border bg-secondary/70">
             <h2 className="capitalize text-xl sm:text-2xl md:text-4xl font-bold">
               become a better software engineer
             </h2>

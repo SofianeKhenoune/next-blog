@@ -3,9 +3,15 @@ import PageContainer from "@/components/page-container"
 import PageTitle from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Github, Mail } from "lucide-react"
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 export default function Login() {
+  const { status } = useSession()
+  const router = useRouter()
+  if (status === "authenticated") {
+    router.replace("/")
+  }
   const onLogin = (provider: string) => () => {
     // TODO: implement
     signIn(provider)

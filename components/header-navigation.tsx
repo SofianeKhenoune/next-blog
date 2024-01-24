@@ -1,5 +1,5 @@
 "use client"
-
+import Loading from "@/app/loading"
 import { cn } from "@/lib/utils"
 import { Category } from "@/types"
 import Link from "next/link"
@@ -15,8 +15,9 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { useCategories } from "@/hooks/useCategories"
-
+import { useSession } from "next-auth/react"
 export function HeaderNavigation() {
+  const { status } = useSession()
   const {
     data: CATEGORIES,
     isFetching: isFetchingCategories,
@@ -29,32 +30,36 @@ export function HeaderNavigation() {
     return <div>Error: There is a problem</div>
   }
   return (
-    <NavigationMenu className="hidden md:block">
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {CATEGORIES.map((category: Category) => (
-                <ListItem
-                  key={category.id}
-                  href={`/categories/${category.slug}`}
-                >
-                  {category.title}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/write" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Write a Post
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <React.Suspense fallback={<Loading />}>
+      <NavigationMenu className="hidden md:block">
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                {CATEGORIES.map((category: Category) => (
+                  <ListItem
+                    key={category.id}
+                    href={`/categories/${category.slug}`}
+                  >
+                    {category.title}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          {status === "authenticated" && (
+            <NavigationMenuItem>
+              <Link href="/write" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Write a Post
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          )}
+        </NavigationMenuList>
+      </NavigationMenu>
+    </React.Suspense>
   )
 }
 
