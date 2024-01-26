@@ -7,8 +7,8 @@ import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
 export default function Login() {
-  const { status } = useSession()
   const router = useRouter()
+  const { status } = useSession()
   if (status === "authenticated") {
     router.replace("/")
   }

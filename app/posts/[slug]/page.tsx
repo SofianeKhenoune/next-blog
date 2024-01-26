@@ -27,8 +27,8 @@ const SinglePost = ({ params }: Props) => {
     <PageContainer>
       <div className="py-10 px-4 flex flex-col">
         <div
-          className="flex justify-center items-center sm:aspect-[2.4/1] py-10 px-4 rounded-lg aspect-square bg-cover overflow-hidden"
-          style={{ backgroundImage: "url(/img/big-code.jpg)" }}
+          className="flex justify-center items-center sm:aspect-[2.4/1] py-10 px-4 rounded-lg aspect-square"
+          style={{ background: `url(${post.image}) no-repeat center/cover` }}
         >
           <h2 className="m-auto rounded-lg border bg-secondary/70 p-4 font-bold text-center sm:text-xl md:text-2xl">
             {post.title}
@@ -39,7 +39,7 @@ const SinglePost = ({ params }: Props) => {
           <div className="flex gap-4 items-center">
             <Avatar>
               <AvatarImage
-                src={post.image || "https://github.com/shadcn.png"}
+                src={post.userAvatar || "https://github.com/shadcn.png"}
                 alt={
                   post.image ? `avatar de ${post.userName}` : "@shadcn image"
                 }
@@ -51,22 +51,25 @@ const SinglePost = ({ params }: Props) => {
             </Avatar>
             <div className="flex flex-col">
               <p className="">{post.userName}</p>
-              <p className="text-slate-500 text-sm">{post.catName}</p>
+
               <p className="text-slate-500 text-sm">{`Posted on ${post.createdAt.slice(
                 0,
                 10
               )}`}</p>
             </div>
           </div>
-          <div className="flex gap-2">
-            <div className="flex items-center gap-1">
-              <MessageCircle size={20} className="" />
-              <p className="">{post.nbComments}</p>
+          <div className="flex gap-2 flex-col">
+            <div className="flex gap-2">
+              <div className="flex items-center gap-1">
+                <MessageCircle size={20} className="" />
+                <p className="">{post.nbComments}</p>
+              </div>
+              <div className="flex items-center gap-1">
+                <Eye size={20} className="" />
+                <p className="">{post.view}</p>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <Eye size={20} className="" />
-              <p className="">{post.view}</p>
-            </div>
+            <p className="text-slate-500 text-sm self-end">{post.catName}</p>
           </div>
         </div>
         <Separator />

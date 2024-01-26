@@ -56,15 +56,22 @@ export default function Hero({ params }: { params: { cat?: string } }) {
         </div>
         {/* second section categories */}
         <div className="p-4 mt-6 flex flex-col gap-4 md:flex-row justify-center items-center">
-          {!isFetchingCategories &&
+          {!isFetchingCategories && CATEGORIES.length !== 0 ? (
             CATEGORIES.map((category: Category) => (
               <Link key={category.id} href={`/categories/${category.slug}`}>
                 <Button variant="outline">{category.title}</Button>
               </Link>
-            ))}
+            ))
+          ) : (
+            <p className="text-center">No categories found</p>
+          )}
         </div>
         {/* third section posts */}
-        {!isFetching && <PostList posts={POSTS} />}
+        {!isFetching && POSTS.length !== 0 ? (
+          <PostList posts={POSTS} />
+        ) : (
+          <p className="text-center">No posts found</p>
+        )}
       </div>
     </PageContainer>
   )

@@ -48,7 +48,7 @@ model User {
   sessions      Session[]
   posts         Post[]
 
-  @@unique([email, name])
+  @@unique([email, name, image])
 }
 
 model VerificationToken {
@@ -71,9 +71,10 @@ model Post {
   nbComments Int      @default(0)
 
   // USER
-  userEmail String
-  userName  String
-  user      User   @relation(fields: [userEmail, userName], references: [email, name])
+  userEmail  String
+  userName   String
+  userAvatar String
+  user       User   @relation(fields: [userEmail, userName, userAvatar], references: [email, name, image])
 
   // CATEGORY
   catSlug String

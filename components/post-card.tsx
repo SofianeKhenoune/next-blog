@@ -9,34 +9,32 @@ type Props = {
 }
 
 export default function PostCard({ post }: Props) {
-  const { title, image, nbComments, view, catName, slug } = post
-
   return (
-    <Link href={`/posts/${slug}`}>
+    <Link href={`/posts/${post.slug}`}>
       <Card className="flex flex-col rounded-lg justify-between border-2 h-full">
         <CardHeader>
           <div className="aspect-square relative">
             <Image
-              src={image || "/img/middle-code.jpg"}
-              alt={title}
+              src={post.image || "/img/middle-code.jpg"}
+              alt={post.title}
               className="aspect-square object-cover transition-all duration-300 hover:scale-110 rounded-lg"
               fill
             />
           </div>
-          <p className="font-semibold text-lg mt-3">{title}</p>
+          <p className="font-semibold text-lg mt-3">{post.title}</p>
         </CardHeader>
         <CardContent>
-          <Badge variant="outline">{catName}</Badge>
+          <Badge variant="outline">{post.catName}</Badge>
         </CardContent>
         <CardFooter>
           <div className="flex gap-2">
             <div className="flex items-center gap-1">
               <MessageCircle size={20} className="text-slate-500" />
-              <p className="text-slate-500">{nbComments}</p>
+              <p className="text-slate-500">{post.nbComments}</p>
             </div>
             <div className="flex items-center gap-1">
               <Eye size={20} className="text-slate-500" />
-              <p className="text-slate-500">{view}</p>
+              <p className="text-slate-500">{post.view}</p>
             </div>
           </div>
         </CardFooter>
