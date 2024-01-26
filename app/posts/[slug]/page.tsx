@@ -39,18 +39,19 @@ const SinglePost = ({ params }: Props) => {
           <div className="flex gap-4 items-center">
             <Avatar>
               <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="@shadcn image"
+                src={post.image || "https://github.com/shadcn.png"}
+                alt={
+                  post.image ? `avatar de ${post.userName}` : "@shadcn image"
+                }
               />
               <AvatarFallback>
-                {post.author &&
-                  post.author.charAt(0) +
-                    post.author.charAt(post.author.indexOf(" ") + 1)}
+                {post.userName.charAt(0) +
+                  post.userName.charAt(post.userName.indexOf(" ") + 1)}
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              {post.author ? <p className="">{post.author}</p> : "Anonymous"}
-
+              <p className="">{post.userName}</p>
+              <p className="text-slate-500 text-sm">{post.catName}</p>
               <p className="text-slate-500 text-sm">{`Posted on ${post.createdAt.slice(
                 0,
                 10

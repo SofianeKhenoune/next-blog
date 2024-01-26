@@ -47,6 +47,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
+
+  @@unique([email, name])
 }
 
 model VerificationToken {
@@ -70,11 +72,13 @@ model Post {
 
   // USER
   userEmail String
-  user      User   @relation(fields: [userEmail], references: [email])
+  userName  String
+  user      User   @relation(fields: [userEmail, userName], references: [email, name])
 
   // CATEGORY
   catSlug String
-  cat     Category @relation(fields: [catSlug], references: [slug])
+  catName String
+  cat     Category @relation(fields: [catSlug, catName], references: [slug, title])
 }
 
 model Category {
@@ -83,4 +87,6 @@ model Category {
   title String
   image String
   posts Post[]
+
+  @@unique([slug, title])
 }

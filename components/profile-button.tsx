@@ -12,7 +12,6 @@ import { Button } from "./ui/button"
 
 export default function ProfileButton() {
   const { data: session, status } = useSession()
-  console.log("session", session, status)
 
   const onLogout = () => {
     signOut({ callbackUrl: "/login" })

@@ -18,6 +18,7 @@ export type Post = {
   slug: string
   catSlug: string
   content: string
+  catName: string
 }
 
 export type PostWithCategory = Prisma.PostGetPayload<{

@@ -9,7 +9,7 @@ type Props = {
 }
 
 export default function PostCard({ post }: Props) {
-  const { title, image, nbComments, view, catSlug, slug, cat } = post
+  const { title, image, nbComments, view, catName, slug } = post
 
   return (
     <Link href={`/posts/${slug}`}>
@@ -17,7 +17,7 @@ export default function PostCard({ post }: Props) {
         <CardHeader>
           <div className="aspect-square relative">
             <Image
-              src="/img/middle-code.jpg"
+              src={image || "/img/middle-code.jpg"}
               alt={title}
               className="aspect-square object-cover transition-all duration-300 hover:scale-110 rounded-lg"
               fill
@@ -26,7 +26,7 @@ export default function PostCard({ post }: Props) {
           <p className="font-semibold text-lg mt-3">{title}</p>
         </CardHeader>
         <CardContent>
-          <Badge variant="outline">{cat.title}</Badge>
+          <Badge variant="outline">{catName}</Badge>
         </CardContent>
         <CardFooter>
           <div className="flex gap-2">

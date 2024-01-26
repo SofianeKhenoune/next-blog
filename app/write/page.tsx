@@ -12,45 +12,72 @@ import {
 } from "@/components/ui/select"
 import { useCategories } from "@/hooks/useCategories"
 import { Category, Post } from "@/types"
+import { slugify } from "@/utils/slugify"
+import axios from "axios"
+import { XCircle } from "lucide-react"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
-
 import { SyntheticEvent, useState } from "react"
 import { useMutation } from "react-query"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
+
 export default function Write() {
   const router = useRouter()
   const { status } = useSession()
   const { data: CATEGORIES } = useCategories()
-  const [titleValue, setTitleValue] = useState("")
-  const [postContent, setPostContent] = useState("")
-  const [catSlug, setCatSlug] = useState("react")
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
+  const [catSlug, setCatSlug] = useState("")
+  const [file, setFile] = useState<File>()
+  const [image, setImage] = useState<string | null>(null)
 
   const { mutate, isLoading } = useMutation(
-    (newPost: Partial<Post>) =>
-      fetch("/api/posts", {
-        method: "POST",
-        body: JSON.stringify(newPost),
-      }),
+    (newPost: Partial<Post>) => axios.post<Post>("/api/posts", newPost),
     {
       onSuccess: (data) => {
         console.log("Data on success", data)
       },
     }
   )
+
+  const onChangeFile = (e: SyntheticEvent) => {
+    const files = (e.target as HTMLInputElement).files
+
+    if (!files || !files[0]) return
+    setFile(files[0])
+    setImage(URL.createObjectURL(files[0]))
+  }
+
+  const uploadImage = async () => {
+    try {
+      if (!file) return
+      const data = new FormData()
+      data.set("file", file)
+      const response = await axios.post("/api/upload", data)
+      return response.data
+    } catch (error: any) {
+      console.log("error on upload image", error)
+    }
+  }
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
-    if (titleValue !== "" || postContent !== "" || catSlug !== "") {
+    const imageSrc = (await uploadImage()) || {
+      imageUrl: "/img/middle-code.jpg",
+    }
+    const { imageUrl } = imageSrc
+    if (title !== "" || content !== "" || catSlug !== "" || imageSrc) {
       await mutate({
-        title: titleValue,
-        content: postContent,
+        title,
+        content,
+        slug: slugify(title),
+        image: imageUrl,
         catSlug,
-        slug: titleValue.trim().replace(/\s+/g, "-").toLowerCase(),
-        image: "/img/big-code.jpg",
+        catName: CATEGORIES?.find((cat: Category) => cat.slug === catSlug)
+          ?.title,
       })
     }
-    console.log("catSlug", catSlug)
   }
 
   if (status === "unauthenticated") {
@@ -65,9 +92,26 @@ export default function Write() {
           placeholder="Title"
           type="text"
           className="mb-3"
-          value={titleValue}
-          onChange={(e) => setTitleValue(e.target.value)}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
+        {/* upload image */}
+        <div className="mb-3">
+          {image && (
+            <div className="w-72 h-72 mx-auto relative rounded-lg overflow-hidden flex">
+              <XCircle
+                color={"red"}
+                size={30}
+                className="absolute right-2 top-2 bg-slate-50 z-20 cursor-pointer rounded-full p-1 hover:scale-110"
+                onClick={() => {
+                  setImage(null)
+                }}
+              />
+              <Image src={image} alt="uploaded image" fill />
+            </div>
+          )}
+          <input type="file" name="image" onChange={onChangeFile} />
+        </div>
         {/* category */}
         <div className="mb-3">
           <Select onValueChange={setCatSlug}>
@@ -92,12 +136,12 @@ export default function Write() {
         {/* content ReactQuill */}
         <ReactQuill
           theme="snow"
-          value={postContent}
-          onChange={setPostContent}
+          value={content}
+          onChange={setContent}
           className="mb-3"
           placeholder="Write something..."
         />
-        {/* upload image */}
+
         {/* submit button */}
         <Button type="submit" onClick={handleSubmit}>
           Publish
