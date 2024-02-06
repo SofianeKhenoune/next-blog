@@ -48,7 +48,10 @@ model User {
   sessions      Session[]
   posts         Post[]
 
+  comments Comment[]
+
   @@unique([email, name, image])
+  @@unique([name, image])
 }
 
 model VerificationToken {
@@ -77,9 +80,11 @@ model Post {
   user       User   @relation(fields: [userEmail, userName, userAvatar], references: [email, name, image])
 
   // CATEGORY
-  catSlug String
-  catName String
-  cat     Category @relation(fields: [catSlug, catName], references: [slug, title])
+  catSlug  String
+  catName  String
+  cat      Category  @relation(fields: [catSlug, catName], references: [slug, title])
+  // COMMENTS
+  comments Comment[]
 }
 
 model Category {
@@ -90,4 +95,17 @@ model Category {
   posts Post[]
 
   @@unique([slug, title])
+}
+
+model Comment {
+  id           String @id @default(cuid())
+  content      String
+  postId       String
+  post         Post   @relation(fields: [postId], references: [id])
+  authorName   String
+  authorAvatar String
+  author       User   @relation(fields: [authorName, authorAvatar], references: [name, image])
+
+  @@unique([postId, authorAvatar, authorName])
+  @@index([authorName, authorAvatar])
 }

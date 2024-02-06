@@ -10,7 +10,7 @@ export default function Login() {
   const router = useRouter()
   const { status } = useSession()
   if (status === "authenticated") {
-    router.replace("/")
+    router.push("/")
   }
   const onLogin = (provider: string) => () => {
     // TODO: implement

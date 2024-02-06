@@ -1,7 +1,9 @@
 "use client"
 import CommentForm from "@/components/comment-form"
+import CommentList from "@/components/comment-list"
 import PageContainer from "@/components/page-container"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { usePost } from "@/hooks/usePost"
 import { Eye, MessageCircle } from "lucide-react"
@@ -27,7 +29,7 @@ const SinglePost = ({ params }: Props) => {
     <PageContainer>
       <div className="py-10 px-4 flex flex-col">
         <div
-          className="flex justify-center items-center sm:aspect-[2.4/1] py-10 px-4 rounded-lg aspect-square"
+          className="flex justify-center items-center sm:aspect-[2.4/1] py-10 px-4 rounded-lg aspect-square mb-3"
           style={{ background: `url(${post.image}) no-repeat center/cover` }}
         >
           <h2 className="m-auto rounded-lg border bg-secondary/70 p-4 font-bold text-center sm:text-xl md:text-2xl">
@@ -35,7 +37,7 @@ const SinglePost = ({ params }: Props) => {
           </h2>
         </div>
 
-        <div className="flex justify-between items-center text-sm P-3 my-6">
+        <div className="flex justify-between items-center text-sm">
           <div className="flex gap-4 items-center">
             <Avatar>
               <AvatarImage
@@ -69,17 +71,15 @@ const SinglePost = ({ params }: Props) => {
                 <p className="">{post.view}</p>
               </div>
             </div>
-            <p className="text-slate-500 text-sm self-end">{post.catName}</p>
+            <Badge>{post.catName}</Badge>
           </div>
         </div>
         <Separator />
-        <div
-          className="mt-6"
-          dangerouslySetInnerHTML={{ __html: post.content as string }}
-        ></div>
-        <div>
-          <CommentForm />
-        </div>
+        <div dangerouslySetInnerHTML={{ __html: post.content as string }}></div>
+        <Separator />
+        <CommentForm />
+        <Separator />
+        <CommentList />
       </div>
     </PageContainer>
   )

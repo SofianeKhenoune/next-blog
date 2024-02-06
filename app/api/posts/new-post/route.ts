@@ -10,7 +10,6 @@ export const POST = async (req: Request) => {
   }
   try {
     const body = await req.json()
-    console.log("session", session)
 
     const post = await prisma.post.create({
       data: {
@@ -20,7 +19,6 @@ export const POST = async (req: Request) => {
         userAvatar: session.user.image,
       },
     })
-    console.log("Post created", post)
 
     return NextResponse.json(post, { status: 200 })
   } catch (error) {
