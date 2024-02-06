@@ -1,12 +1,9 @@
+import axios from "axios"
 import { useQuery } from "react-query"
 
 const getCategories = async () => {
   try {
-    const response = await fetch("/api/categories", { method: "GET" })
-    if (!response.ok) {
-      throw new Error(`erreur HTTP! statut: ${response.status}`)
-    }
-    const data = await response.json()
+    const { data } = await axios.get("/api/categories")
     return data
   } catch (error: any) {
     console.error("Erreur lors de la création des données:", error.message)

@@ -27,21 +27,19 @@ export default function Write() {
   const title = usePostForm((state) => state.title)
   const setTitle = usePostForm((state) => state.setTitle)
   const catName = usePostForm((state) => state.categoryName)
-
   const resetForm = usePostForm((state) => state.reset)
   const file = usePostForm((state) => state.file)
   useEffect(() => {
     ref.current?.focus()
   })
-  const { mutate, isLoading } = useMutation(
-    (newPost: Partial<Post>) =>
-      axios.post<Post>("/api/posts/new-post", newPost),
-    {
-      onSuccess: (data) => {
-        resetForm()
-      },
-    }
-  )
+  const createPost = (newPost: Partial<Post>) =>
+    axios.post<Post>("/api/posts/new-post", newPost).then((res) => res.data)
+  const { mutate, isLoading } = useMutation(createPost, {
+    onSuccess: (data: Post) => {
+      resetForm()
+      router.push(`/posts/${data.slug}`)
+    },
+  })
 
   const uploadImage = async () => {
     try {
@@ -102,7 +100,9 @@ export default function Write() {
           {/* content ReactQuill */}
           <TextEditor />
           {/* submit button */}
-          <Button type="submit">Publish</Button>
+          <Button disabled={isLoading} type="submit">
+            {isLoading ? "Create an article" : "Publish"}
+          </Button>
         </form>
         <p>{}</p>
       </div>
