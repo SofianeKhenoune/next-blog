@@ -48,6 +48,7 @@ model User {
   sessions      Session[]
   posts         Post[]
 
+  // COMMENTS
   comments Comment[]
 
   @@unique([email, name, image])
@@ -98,14 +99,15 @@ model Category {
 }
 
 model Comment {
-  id           String @id @default(cuid())
-  content      String
-  postId       String
-  post         Post   @relation(fields: [postId], references: [id])
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  postSlug String
+  post     Post   @relation(fields: [postSlug], references: [slug])
+
+  userEmail    String
+  user         User   @relation(fields: [userEmail], references: [email])
   authorName   String
   authorAvatar String
-  author       User   @relation(fields: [authorName, authorAvatar], references: [name, image])
-
-  @@unique([postId, authorAvatar, authorName])
-  @@index([authorName, authorAvatar])
 }

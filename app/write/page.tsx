@@ -11,8 +11,6 @@ import { Post } from "@/types"
 import { slugify } from "@/utils/slugify"
 import axios from "axios"
 import clsx from "clsx"
-
-import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { SyntheticEvent, useEffect, useRef } from "react"
 import { useMutation } from "react-query"
@@ -21,7 +19,6 @@ import "react-quill/dist/quill.snow.css"
 export default function Write() {
   const router = useRouter()
   const ref = useRef<HTMLInputElement>(null)
-  const { status } = useSession()
   const content = usePostForm((state) => state.content)
   const catSlug = usePostForm((state) => state.categorySlug)
   const title = usePostForm((state) => state.title)

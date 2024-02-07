@@ -16,6 +16,7 @@ type Props = {
 
 const SinglePost = ({ params }: Props) => {
   const { slug } = params
+
   const { data: post, isFetching, error } = usePost(slug)
 
   if (isFetching) {
@@ -77,9 +78,9 @@ const SinglePost = ({ params }: Props) => {
         <Separator />
         <div dangerouslySetInnerHTML={{ __html: post.content as string }}></div>
         <Separator />
-        <CommentForm />
+        <CommentForm postSlug={slug} />
         <Separator />
-        <CommentList />
+        <CommentList postSlug={slug} />
       </div>
     </PageContainer>
   )

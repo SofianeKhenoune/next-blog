@@ -10,19 +10,21 @@ export const POST = async (req: Request) => {
   }
   try {
     const body = await req.json()
-    const post = await prisma.post.create({
+    const comment = await prisma.comment.create({
       data: {
         ...body,
         userEmail: session.user.email,
-        userName: session.user.name,
-        userAvatar: session.user.image,
+        authorName: session.user.name,
+        authorAvatar: session.user.image,
       },
     })
 
-    return NextResponse.json(post, { status: 200 })
+    return NextResponse.json(comment, { status: 200 })
   } catch (error) {
     return NextResponse.json(
-      { message: `Something went wrong on submitting new Post: ${error}` },
+      {
+        message: `Something went wrong on submitting new comment: ${error}`,
+      },
       { status: 500 }
     )
   }
