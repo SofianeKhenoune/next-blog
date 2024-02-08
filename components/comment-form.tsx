@@ -35,7 +35,6 @@ export default function CommentForm({ ...props }: CommentFormProps) {
     axios.post("/api/comments/new", newComment).then((res) => res.data)
   const { mutate, isLoading } = useMutation(createComment, {
     onSuccess: (data: Comment) => {
-      console.log(data)
       router.push(`/posts/${data.postSlug}`)
     },
   })
