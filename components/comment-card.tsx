@@ -11,7 +11,7 @@ type Props = {
 
 export default function CommentCard({ props }: Props) {
   return (
-    <div className="p-5 border w-full my-2">
+    <div className="p-5 border max-w-full my-2">
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-3">
           <Avatar>

@@ -11,12 +11,13 @@ import { Post } from "@/types"
 import { slugify } from "@/utils/slugify"
 import axios from "axios"
 import clsx from "clsx"
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { SyntheticEvent, useEffect, useRef } from "react"
+import { SyntheticEvent, useEffect, useLayoutEffect, useRef } from "react"
 import { useMutation } from "react-query"
-import "react-quill/dist/quill.snow.css"
 
 export default function Write() {
+  const { data: session } = useSession()
   const router = useRouter()
   const ref = useRef<HTMLInputElement>(null)
   const content = usePostForm((state) => state.content)
@@ -67,9 +68,12 @@ export default function Write() {
     }
   }
 
-  if (status === "unauthenticated") {
-    router.push("/login")
-  }
+  useLayoutEffect(() => {
+    if (!session) {
+      router.replace("/login")
+      return
+    }
+  }, [session, router])
   return (
     <PageContainer>
       <div>

@@ -1,6 +1,7 @@
 import { usePostForm } from "@/state/form"
-import ReactQuill from "react-quill"
+import dynamic from "next/dynamic"
 import "react-quill/dist/quill.snow.css"
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false })
 export default function TextEditor() {
   const content = usePostForm((state) => state.content)
   const setContent = usePostForm((state) => state.setContent)
